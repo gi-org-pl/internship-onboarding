@@ -31,7 +31,15 @@ Then:
 
 2. Run it again without `--dry-run`. It creates the milestone with the folder's `README.md` as its description (or reuses one with the same title), then each intern's issues in file order, with the `Systemic internships` label. Links between tasks become that intern's issue numbers, and `{{issue}}` becomes the issue's own number. If someone else creates an issue at the same time, the numbers shift and the script fixes the links.
 3. Check that the issues reached the project. The project adds every issue with the `Systemic internships` label by itself; the timeline of an issue shows an `added_to_project_v2` event.
-4. Add a view for the group to the [project](https://github.com/orgs/gi-org-pl/projects/26), named like the milestone, filtered with `milestone:"Internship NN-YYYY"`. Copy the layout of the previous group's view. Views need the `project` scope: `gh auth refresh -s project`.
+4. Add a board view for the group to the [project](https://github.com/orgs/gi-org-pl/projects/26), named `NN-YYYY` like the earlier views, with the same fields. It needs the `project` scope (`gh auth refresh -s project`):
+
+   ```bash
+   gh api -X POST orgs/gi-org-pl/projectsV2/26/views --input - <<'EOF'
+   {"name": "08-2026", "layout": "board", "filter": "milestone:\"Internship 08-2026\"", "visible_fields": [351396087, 351396088, 351396089, 351396091, 351396097, 351411300, 351411327]}
+   EOF
+   ```
+
+   The numbers are the project's Title, Assignees, Status, Linked pull requests, Sub-issues progress, Start date and End date fields (`gh api orgs/gi-org-pl/projectsV2/26/fields`). The board's columns are the Status values. Reply with the view's `html_url`.
 5. Organisation membership and the group's team (`interns-YYYY-NN`, a child of `interns` with `push` on `product`) live in [`gi-org-pl/github-iac`](https://github.com/gi-org-pl/github-iac), in `config/members.yaml` and `config/teams.yaml`. That needs the interns' GitHub logins and a pull request there.
 
 The script needs `gh` logged in with the `repo` scope and Node.js 22 or newer.
