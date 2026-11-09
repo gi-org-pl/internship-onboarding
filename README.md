@@ -10,7 +10,6 @@ You need:
 
 - [Claude Code](https://claude.com/claude-code)
 - the [GitHub CLI](https://cli.github.com/), logged in with an account that can create issues in `product`, and allowed to edit projects: `gh auth login`, then `gh auth refresh -s project`
-- Node.js 22 or newer
 
 Then:
 
@@ -32,15 +31,6 @@ Then:
 
 Claude can also prepare the interns' organisation access: members and the group's team live in [`gi-org-pl/github-iac`](https://github.com/gi-org-pl/github-iac), and need the interns' GitHub logins.
 
-## Without Claude
-
-```bash
-node scripts/publish.mjs personal-page-and-blog "Internship 09-2026" "Jan Kowalski" "Anna Nowak=anowak" --dry-run
-node scripts/publish.mjs personal-page-and-blog "Internship 09-2026" "Jan Kowalski" "Anna Nowak=anowak"
-```
-
-`--dry-run` creates nothing and writes the rendered issues to a temporary folder for you to read. `=anowak` is an optional GitHub login to assign. `node scripts/publish.mjs --help` lists the other options.
-
 ## What is in it
 
 | Path                                     | What it is                                                                                         |
@@ -48,8 +38,7 @@ node scripts/publish.mjs personal-page-and-blog "Internship 09-2026" "Jan Kowals
 | `personal-page-and-blog/`                | The tasks of one curriculum: a personal page with a blog, a React front end and a Nest.js back end |
 | `personal-page-and-blog/README.md`       | The welcome text for interns, published as the description of the group's milestone                |
 | `personal-page-and-blog/NN-task-name.md` | One task, published as one issue per intern, in `NN` order                                         |
-| `scripts/publish.mjs`                    | Creates the milestone and the issues                                                               |
-| `AGENTS.md`                              | Instructions for Claude, and the rules for writing tasks                                           |
+| `AGENTS.md`                              | How Claude publishes a group, and the rules for writing tasks                                      |
 
 ## Changing the tasks
 
