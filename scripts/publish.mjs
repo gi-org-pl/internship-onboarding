@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -48,6 +48,7 @@ const tasks = readdirSync(join(root, folder))
     return { file, title: heading[1].trim(), template: text.slice(heading[0].length) };
   });
 if (tasks.length === 0) fail(`${folder} has no task files (NN-task-name.md)`);
+if (!existsSync(join(root, folder, 'README.md'))) fail(`${folder} has no README.md to use as the milestone description`);
 
 const position = new Map(tasks.map((task, i) => [task.file, i]));
 for (const task of tasks) {
@@ -127,7 +128,7 @@ let milestone = existing?.number;
 if (milestone) {
   console.log(`Using milestone "${milestoneTitle}" (#${milestone})`);
 } else {
-  const description = readFileSync(join(root, 'README.md'), 'utf8').trim();
+  const description = readFileSync(join(root, folder, 'README.md'), 'utf8').trim();
   const created = api(`repos/${opts.repo}/milestones`, 'POST', {
     title: milestoneTitle,
     description,
